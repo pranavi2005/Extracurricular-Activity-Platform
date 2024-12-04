@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Slider from 'react-slick';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { faInstagram } from '@fortawesome/free-brands-svg-icons';
@@ -28,17 +27,16 @@ function Welcome() {
       <h1 style={styles.mainHeading}>Extracurricular Activity Platform</h1>
       <h2 style={styles.caption}>Explore. Engage. Excel.</h2>
       <div style={styles.content}>
-        <div style={styles.text}>
-          <p style={styles.description}>
+        <div style={styles.textContainer}>
+          <p style={styles.descriptionText}>
             Extracurricular activity platform is a vibrant community of students passionate about exploring interests beyond academics.
             Our club provides a platform for members to discover new talents, develop skills, and build lifelong connections.
             Join us to unleash your creativity, challenge yourself, and make unforgettable memories.
           </p>
         </div>
       </div>
-
       {/* Image Slider Section */}
-      <div style={styles.sliderContainer}>
+      {/* <div style={styles.sliderContainer}>
         <Slider {...settings}>
           <div style={styles.slide}>
             <img src="/images/image1.jpg" alt="Image 1" style={styles.slideImage} />
@@ -59,23 +57,22 @@ function Welcome() {
             <img src="/images/image6.jpg" alt="Image 6" style={styles.slideImage} />
           </div>
         </Slider>
-      </div>
-
+      </div> */}
       {/* Contact Details Section */}
       <div style={styles.contactDetailsSection}>
         <h3 style={styles.contactHeading}>Contact Us</h3>
         <div style={styles.contactDetails}>
           <div style={styles.contactItem}>
             <FontAwesomeIcon icon={faEnvelope} style={styles.icon} />
-            <span style={styles.text}>extracurricular.active@gmail.com</span>
+            <span style={styles.contactText}>extracurricular.active@gmail.com</span>
           </div>
           <div style={styles.contactItem}>
             <FontAwesomeIcon icon={faPhone} style={styles.icon} />
-            <span style={styles.text}>+91 98765 43210</span>
+            <span style={styles.contactText}>+91 98765 43210</span>
           </div>
           <div style={styles.contactItem}>
             <FontAwesomeIcon icon={faInstagram} style={styles.icon} />
-            <span style={styles.text}>@extracurricular_activities</span>
+            <span style={styles.contactText}>@extracurricular_activities</span>
           </div>
         </div>
       </div>
@@ -113,7 +110,7 @@ const styles = {
     justifyContent: 'center',
     marginTop: '20px',
   },
-  text: {
+  textContainer: {
     width: '100%',
     paddingLeft: '20px',
     paddingRight: '20px',
@@ -130,7 +127,7 @@ const styles = {
     color: '#ddd',
     margin: '5px 0',
   },
-  description: {
+  descriptionText: {
     fontSize: '1rem',
     color: '#ccc',
     lineHeight: '1.6',
@@ -145,18 +142,18 @@ const styles = {
     borderRadius: '5px',
     cursor: 'pointer',
   },
-  sliderContainer: {
-    marginTop: '40px',
-  },
-  slide: {
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  slideImage: {
-    width: '80%',
-    height: 'auto',
-    borderRadius: '10px',
-  },
+  // sliderContainer: {
+  //   marginTop: '40px',
+  // },
+  // slide: {
+  //   display: 'flex',
+  //   justifyContent: 'center',
+  // },
+  // slideImage: {
+  //   width: '80%',
+  //   height: 'auto',
+  //   borderRadius: '10px',
+  // },
   contactDetailsSection: {
     marginTop: '50px',
     padding: '20px',
@@ -187,7 +184,7 @@ const styles = {
     fontSize: '1.5rem',
     color: '#fff',
   },
-  text: {
+  contactText: {
     fontSize: '1rem',
     color: '#fff',
   },

@@ -1,12 +1,9 @@
-// src/Login.js
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const users = [
   { username: 'user1', password: 'password1' },
   { username: 'user2', password: 'password2' },
-  // Add more users as needed
 ];
 
 const Login = () => {
@@ -17,12 +14,9 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // Check if the username and password match any user in the users array
     const validUser = users.find(user => user.username === username && user.password === password);
 
     if (validUser) {
-      // On successful login, navigate to the dashboard
       navigate('/dashboard');
     } else {
       setError('Invalid username or password');
@@ -31,93 +25,134 @@ const Login = () => {
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.heading}>User Login</h2>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <div style={styles.inputGroup}>
-          <label style={styles.label}>Username</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            style={styles.input}
-            required
-          />
+      <h1 style={styles.mainTitle}>Extracurricular Activity Platform</h1> {/* Main Title */}
+      <div style={styles.overlay}>
+        <h2 style={styles.heading}>Welcome Back!</h2>
+        <p style={styles.subheading}>Please login to continue</p>
+        <form onSubmit={handleSubmit} style={styles.form}>
+          <div style={styles.inputGroup}>
+            <label style={styles.label}>Username</label>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              style={styles.input}
+              required
+            />
+          </div>
+          <div style={styles.inputGroup}>
+            <label style={styles.label}>Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              style={styles.input}
+              required
+            />
+          </div>
+          {error && <p style={styles.error}>{error}</p>}
+          <button type="submit" style={styles.button}>Login</button>
+          <p>
+            <a href="/forgot-password" style={styles.link}>Forgot Password?</a>
+          </p>
+        </form>
+        <div style={styles.links}>
+          <p>
+            <a href="/admin-login" style={styles.link}>Admin Login</a>
+          </p>
         </div>
-        <div style={styles.inputGroup}>
-          <label style={styles.label}>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            style={styles.input}
-            required
-          />
-        </div>
-        {error && <p style={styles.error}>{error}</p>}
-        <p>
-          <a href="/forgot-password" style={styles.link}>Forgot Password?</a> {/* Added forgot password link */}
-        </p>
-        <button type="submit" style={styles.button}>Login</button>
-      </form>
-      <div style={styles.links}>
-        <p>
-          <a href="/admin-login" style={styles.link}>Admin Login</a>
-        </p>
       </div>
     </div>
-  );
+  );  
 };
 
 // Inline Styles
 const styles = {
   container: {
-    fontFamily: 'Arial, sans-serif',
     display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    flexDirection: 'column', 
     justifyContent: 'center',
-    padding: '20px',
+    alignItems: 'center',
     height: '100vh',
-    backgroundColor: '#f4f4f4',
+    width: '100vw',
+    backgroundImage: 'url("/images/welcome.jpg")', 
+    backgroundSize: 'cover', 
+    backgroundPosition: 'center', 
+    backgroundRepeat: 'no-repeat', 
+    margin: 0,
+    overflow: 'hidden',
+  },
+  mainTitle: {
+    fontSize: '3rem',
+    color: '#fff',
+    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)', 
+    marginBottom: '20px',
+    textAlign: 'center',
+  },
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    padding: '30px',
+    borderRadius: '10px',
+    color: '#fff',
+    width: '350px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+    textAlign: 'center',
+    maxWidth: '90%', 
   },
   heading: {
+    fontSize: '2rem',
+    marginBottom: '10px',
+  },
+  subheading: {
+    fontSize: '1rem',
     marginBottom: '20px',
+    color: '#bbb',
   },
   form: {
     display: 'flex',
     flexDirection: 'column',
-    width: '300px',
   },
   inputGroup: {
     marginBottom: '15px',
   },
   label: {
     marginBottom: '5px',
+    textAlign: 'left',
+    fontWeight: 'bold',
+    display: 'block',
+    color: '#ddd',
   },
   input: {
     padding: '10px',
     border: '1px solid #ccc',
     borderRadius: '5px',
+    fontSize: '1rem',
+    width: '100%', 
+    boxSizing: 'border-box',
   },
   error: {
     color: 'red',
     marginBottom: '10px',
+    fontSize: '0.9rem',
   },
   button: {
     padding: '10px',
-    backgroundColor: '#007BFF',
+    backgroundColor: '#28a745',
     color: '#fff',
     border: 'none',
     borderRadius: '5px',
+    fontSize: '1rem',
     cursor: 'pointer',
+    transition: 'background-color 0.3s ease',
   },
   links: {
     marginTop: '15px',
   },
   link: {
-    color: '#007BFF',
+    color: '#17a2b8',
     textDecoration: 'underline',
     cursor: 'pointer',
+    transition: 'color 0.3s ease',
   },
 };
 
