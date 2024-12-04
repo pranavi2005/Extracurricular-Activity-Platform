@@ -13,7 +13,6 @@ import EventNotification from './EventNotification';
 import AddEvent from './AddEvent';
 import ManageEvents from './ManageEvents';
 import TrackStudentParticipation from './TrackStudentParticipation';
-import UpdateEvents from './UpdateEvents';
 import GatherFeedback from './GatherFeedback';
 import StudentFeedback from './StudentFeedback';
 import SubmitFeedback from './SubmitFeedback';
@@ -36,7 +35,6 @@ function App() {
         <Route path="/add-event" element={<AddEvent />} />
         <Route path="/manage-events" element={<ManageEvents />} />
         <Route path="/track-student-participation" element={<TrackStudentParticipation />} />
-        <Route path="/update-events" element={<UpdateEvents />} />
         <Route path="/gather-feedback" element={<GatherFeedback />} />
         <Route path="/student-feedback" element={<StudentFeedback />} />
         <Route path="/submit-feedback" element={<SubmitFeedback />} />

@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import AddEvent from './AddEvent';
 import ManageEvents from './ManageEvents';
 import TrackStudentParticipation from './TrackStudentParticipation';
-import UpdateEvents from './UpdateEvents';
 import GatherFeedback from './GatherFeedback';
 import StudentFeedback from './StudentFeedback';
 import AddStudentCredentials from './AddStudentCredentials';
@@ -23,7 +22,6 @@ const AdminDashboard = () => {
   const showAddEvent = () => setActiveSection('addEvent');
   const showManageEvents = () => setActiveSection('manageEvents');
   const showTrackParticipation = () => setActiveSection('trackParticipation');
-  const showUpdateEvents = () => setActiveSection('updateEvents');
   const showGatherFeedback = () => setActiveSection('gatherFeedback');
   const showStudentFeedback = () => setActiveSection('studentFeedback');
   const showAddStudentCredentials = () => setActiveSection('addStudentCredentials');
@@ -38,8 +36,6 @@ const AdminDashboard = () => {
         return <ManageEvents />;
       case 'trackParticipation':
         return <TrackStudentParticipation />;
-      case 'updateEvents':
-        return <UpdateEvents />;
       case 'gatherFeedback':
         return <GatherFeedback />;
       case 'studentFeedback':
@@ -71,7 +67,6 @@ const AdminDashboard = () => {
             <li style={styles.sidebarListItem} onClick={showAddStudentCredentials}>Add Student Credentials</li>
             <li style={styles.sidebarListItem} onClick={showManageStudentCredentials}>Manage Student Credentials</li>
             <li style={styles.sidebarListItem} onClick={showTrackParticipation}>Track Student Participation</li>
-            <li style={styles.sidebarListItem} onClick={showUpdateEvents}>Update Events</li>
             <li style={styles.sidebarListItem} onClick={showGatherFeedback}>Gather Feedback</li>
             <li style={styles.sidebarListItem} onClick={showStudentFeedback}>Students Feedback</li>
           </ul>
