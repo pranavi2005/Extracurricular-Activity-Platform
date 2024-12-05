@@ -10,4 +10,5 @@ import com.example.demo.model.User;
 public interface UserRepository extends JpaRepository<User,String>{
 	@Query("select e from User e where e.username=?1 and e.password=?2") 
 	 public User checkuserlogin(String username, String epwd);
+	void deleteByUsername(String username);
 }

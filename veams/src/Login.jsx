@@ -12,7 +12,7 @@ const Login = () => {
     e.preventDefault();
     try {
       // Call the Spring Boot backend API
-      const response = await axios.get("http://localhost:8081/login", {
+      const response = await axios.get("http://localhost:8081/api/save-user/login", {
         params: { user: username, pwd: password },
         withCredentials: true, // Ensure credentials are sent
       });
@@ -26,7 +26,12 @@ const Login = () => {
       }
     } catch (err) {
       console.error("Login error:", err.message);
-      setError("Error during login. Please try again.");
+      if(err.response && err.response.data){
+        setError(err.response.data.message || "Error during login. Please try again.");
+      }
+      else{
+        setError("Error during login. Please try again.");
+      }
     }
   };
 

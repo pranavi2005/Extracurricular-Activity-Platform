@@ -1,31 +1,46 @@
-// src/AddStudentCredentials.js
-
 import React, { useState } from 'react';
 
 const AddStudentCredentials = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [email, setEmail] = useState(''); // New email state
+  const [email, setEmail] = useState('');
   const [students, setStudents] = useState([]);
   const [successMessage, setSuccessMessage] = useState('');
 
-  const handleAddStudent = (e) => {
+  const handleAddStudent = async (e) => {
     e.preventDefault();
 
-    // Add the new student to the students list
+    // New student data
     const newStudent = { username, password, email };
-    setStudents([...students, newStudent]);
 
-    // Clear input fields
-    setUsername('');
-    setPassword('');
-    setEmail('');
+    // POST request to backend to save the new student credentials
+    try {
+      const response = await fetch('http://localhost:8081/api/save-user/addStudent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newStudent),
+      });
 
-    // Display success message
-    setSuccessMessage(`Credentials assigned to ${newStudent.username}`);
+      console.log('Response Status:', response.status);
+      const responseBody = await response.json();
+      console.log('Response Body:', responseBody);
 
-    // Clear success message after a few seconds
-    setTimeout(() => setSuccessMessage(''), 3000);
+      if (response.ok) {
+        setUsername('');
+        setPassword('');
+        setEmail('');
+
+        setSuccessMessage(`Credentials assigned to ${newStudent.username}`);
+        setTimeout(() => setSuccessMessage(''), 3000);
+      } else {
+        throw new Error('Failed to add credentials');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setSuccessMessage('Failed to add credentials');
+    }
   };
 
   return (

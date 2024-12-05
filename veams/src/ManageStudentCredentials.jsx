@@ -1,28 +1,51 @@
-// src/ManageStudentCredentials.js
-
-import React, { useState } from 'react';
-
-const initialStudents = [
-  { username: 'user1',email:'user1@gmail.com', password: 'password1' },
-  { username: 'user2',email:'user2@gmail.com', password: 'password2' },
-  { username: 'user3',email:'user3@gmail.com', password: 'password3' },
-  // Add more students here
-];
+import React, { useState, useEffect } from 'react';
 
 const ManageStudentCredentials = () => {
-  const [students, setStudents] = useState(initialStudents);
+  const [students, setStudents] = useState([]);
   const [successMessage, setSuccessMessage] = useState('');
 
-  // Function to delete a student's credentials
-  const handleDelete = (usernameToDelete) => {
-    const updatedStudents = students.filter(student => student.username !== usernameToDelete);
-    setStudents(updatedStudents);
+  // Fetch student credentials from backend when component mounts
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const response = await fetch('http://localhost:8081/api/save-user/getAllStudents'); // Change the URL to match your backend endpoint
+        if (response.ok) {
+          const data = await response.json();
+          setStudents(data); // Assuming your backend returns the list of students in JSON format
+        } else {
+          throw new Error('Failed to fetch students');
+        }
+      } catch (error) {
+        console.error('Error fetching students:', error);
+        setSuccessMessage('Failed to load students');
+      }
+    };
 
-    // Set success message
-    setSuccessMessage(`Successfully deleted credentials for ${usernameToDelete}`);
-    
-    // Reset message after a few seconds
-    setTimeout(() => setSuccessMessage(''), 3000);
+    fetchStudents();
+  }, []); // Empty dependency array means it runs only once when the component mounts
+
+  // Function to delete a student's credentials
+  const handleDelete = async (usernameToDelete) => {
+    try {
+      const response = await fetch(`http://localhost:8081/api/save-user/deleteStudent/${usernameToDelete}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        const updatedStudents = students.filter(student => student.username !== usernameToDelete);
+        setStudents(updatedStudents);
+
+        setSuccessMessage(`Successfully deleted credentials for ${usernameToDelete}`);
+        
+        // Reset success message after a few seconds
+        setTimeout(() => setSuccessMessage(''), 3000);
+      } else {
+        throw new Error('Failed to delete student credentials');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setSuccessMessage('Failed to delete credentials');
+    }
   };
 
   return (
@@ -99,7 +122,5 @@ const styles = {
     fontSize: '16px',
   },
 };
-
-
 
 export default ManageStudentCredentials;

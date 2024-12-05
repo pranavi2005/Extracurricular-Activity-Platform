@@ -8,7 +8,7 @@ public class ExtracurricularProjectApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ExtracurricularProjectApplication.class, args);
-		System.out.println("working");
+		System.out.println("welcome pranavi");
 	}
 
 }
