@@ -1,52 +1,54 @@
-// src/TrackParticipation.js
-
-import React, { useState } from 'react';
-
-const pastEvents = [
-  { id: 1, name: 'Art Workshop', date: '2024-10-15' },
-  { id: 2, name: 'Sports Day', date: '2024-10-22' },
-];
-
-const upcomingEventsData = [
-  { id: 3, name: 'Music Festival', date: '2024-11-05' },
-  { id: 4, name: 'Coding Bootcamp', date: '2024-11-10' },
-];
+import React from 'react';
 
 const TrackParticipation = () => {
-  const [upcomingEvents, setUpcomingEvents] = useState(upcomingEventsData);
+  // Static event details
+  const upcomingEvents = [
+    {
+      id: 1,
+      name: "90's Melodies",
+      date: '2024-12-04',
+      time: '18:30',
+      venue: 'Auditorium',
+    },
+    {
+      id: 2,
+      name: 'Cloud Computing',
+      date: '2024-12-03',
+      time: '16:00',
+      venue: 'R402',
+    },
+  ];
 
   const handleCancelRegistration = (eventId) => {
-    // Filter out the canceled event
-    const updatedEvents = upcomingEvents.filter((event) => event.id !== eventId);
-    setUpcomingEvents(updatedEvents);
-    alert('Registration canceled successfully!');
+    // Simulating cancellation (not persisting changes)
+    alert('Registration canceled successfully for event ID: ' + eventId);
   };
 
   return (
     <div style={styles.container}>
       <h1 style={styles.heading}>Track Participation</h1>
       
-      <h2 style={styles.subHeading}>Past Events</h2>
+      <h2 style={styles.subHeading}>All Events</h2>
       <ul style={styles.eventList}>
-        {pastEvents.map((event) => (
-          <li key={event.id} style={styles.eventItem}>
-            {event.name} - {event.date}
-          </li>
-        ))}
-      </ul>
-
-      <h2 style={styles.subHeading}>Upcoming Events</h2>
-      <ul style={styles.eventList}>
-        {upcomingEvents.map((event) => (
-          <li key={event.id} style={styles.eventItem}>
-            {event.name} - {event.date} 
-            <button 
-              onClick={() => handleCancelRegistration(event.id)} 
-              style={styles.cancelButton}>
-              Cancel Registration
-            </button>
-          </li>
-        ))}
+        {upcomingEvents && upcomingEvents.length > 0 ? (
+          upcomingEvents.map((event) => (
+            <li key={event.id} style={styles.eventItem}>
+              <div>
+                <strong>{event.name}</strong>
+                <p>Date: {event.date}</p>
+                <p>Time: {event.time}</p>
+                <p>Venue: {event.venue}</p>
+              </div>
+              <button 
+                onClick={() => handleCancelRegistration(event.id)} 
+                style={styles.cancelButton}>
+                Cancel Registration
+              </button>
+            </li>
+          ))
+        ) : (
+          <p>No upcoming events</p>
+        )}
       </ul>
     </div>
   );

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.model.User;
 import com.example.demo.service.Userservice;
 
+import jakarta.servlet.http.HttpSession;
+
 
 @RestController
 @RequestMapping("/api/save-user")
@@ -26,6 +28,11 @@ public class UserController {
 		System.out.println("Username: " + username + ", Password: " + password);
 		return userservice.checkuserlogin(username,password); 
 	 }
+	@GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate(); // Invalidate the session
+        return "You have been logged out successfully.";
+    }
 	@PostMapping("/addStudent")
 	public User addStudent(@RequestBody User user) {
 		return userservice.saveUser(user);

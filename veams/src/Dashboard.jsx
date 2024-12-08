@@ -4,6 +4,7 @@ import RegisterActivities from './RegisterActivities';
 import TrackParticipation from './TrackParticipation';
 import EventNotification from './EventNotification';
 import SubmitFeedback from './SubmitFeedback';
+import Payments from './Payments';
 
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState('welcome');
@@ -14,6 +15,7 @@ const Dashboard = () => {
   const showTrackParticipation = () => setActiveSection('track');
   const showEventNotification = () => setActiveSection('notification');
   const showSubmitFeedback = () => setActiveSection('feedback');
+  const showPayments=()=>setActiveSection('payments');
 
   const handleLogout = () => {
     alert('You have been logged out.');
@@ -30,6 +32,8 @@ const Dashboard = () => {
         return <EventNotification />;
       case 'feedback':
         return <SubmitFeedback />;
+      case 'payments':
+        return <Payments/>;
       default:
         return <WelcomeMessage />;
     }
@@ -65,6 +69,15 @@ const Dashboard = () => {
                 onClick={showTrackParticipation}
               >
                 Track Participation
+              </li>
+              <li
+                style={{
+                  ...styles.sidebarListItem,
+                  backgroundColor: activeSection === 'payments' ? '#007BFF' : '#444',
+                }}
+                onClick={showPayments}
+              >
+                Make Payment
               </li>
               <li
                 style={{

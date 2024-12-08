@@ -7,6 +7,7 @@ import GatherFeedback from './GatherFeedback';
 import StudentFeedback from './StudentFeedback';
 import AddStudentCredentials from './AddStudentCredentials';
 import ManageStudentCredentials from './ManageStudentCredentials';
+import SendNotification from './SendNotification';
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState('welcome');
@@ -45,6 +46,10 @@ const AdminDashboard = () => {
     setActiveSection('manageStudentCredentials');
     setActiveItem('manageStudentCredentials');
   };
+  const showSendNotification=()=>{
+    setActiveSection('sendNotification');
+    setActiveItem('sendNotification');
+  }
 
   const renderContent = () => {
     switch (activeSection) {
@@ -62,6 +67,8 @@ const AdminDashboard = () => {
         return <AddStudentCredentials />;
       case 'manageStudentCredentials':
         return <ManageStudentCredentials />;
+      case 'sendNotification':
+        return <SendNotification />;
       default:
         return <WelcomeMessage />;
     }
@@ -124,6 +131,15 @@ const AdminDashboard = () => {
                 onClick={showTrackParticipation}
               >
                 Track Student Participation
+              </li>
+              <li
+                style={{
+                  ...styles.sidebarListItem,
+                  backgroundColor: activeItem === 'sendNotification' ? '#007BFF' : '#444', // Active item background color
+                }}
+                onClick={showSendNotification}
+              >
+                Send Event Notification
               </li>
               <li
                 style={{

@@ -1,75 +1,114 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const ManageEvents = () => {
-  // Sample data representing scheduled events
-  const [events, setEvents] = useState([
-    { id: 1, name: 'Art Workshop', date: '2024-10-10', time: '10:00', status: 'upcoming' },
-    { id: 2, name: 'Science Fair', date: '2024-09-15', time: '14:00', status: 'past' },
-    { id: 3, name: 'Music Concert', date: '2024-11-05', time: '18:00', status: 'upcoming' },
-    { id: 4, name: 'Sports Day', date: '2024-08-20', time: '09:00', status: 'past' },
-  ]);
-
+  const [events, setEvents] = useState([]);
   const [message, setMessage] = useState('');
-  const [editEvent, setEditEvent] = useState(null); // State to hold event being edited
+  const [editEvent, setEditEvent] = useState(null);
 
-  const handleCancelEvent = (id) => {
-    const updatedEvents = events.filter(event => event.id !== id);
-    setEvents(updatedEvents);
-    setMessage('Event has been successfully canceled.');
+  // Fetch events from backend on component mount
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch('http://localhost:8081/api/events');
+        if (response.ok) {
+          const data = await response.json();
+          setEvents(data);
+        } else {
+          setMessage('Failed to fetch events');
+        }
+      } catch (error) {
+        setMessage('Error fetching events');
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  const handleCancelEvent = async (name) => {
+    try {
+      const response = await fetch(`http://localhost:8081/api/events/${name}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        // Update the frontend state by removing the deleted event
+        const updatedEvents = events.filter(event => event.name !== name);
+        setEvents(updatedEvents);
+        setMessage('Event has been successfully canceled.');
+      } else {
+        const errorData = await response.json();
+        setMessage(`Failed to cancel event: ${errorData.message || 'Unknown error'}`);
+      }
+    } catch (error) {
+      setMessage('Error canceling event');
+    }
+
+    // Clear the message after 3 seconds
     setTimeout(() => setMessage(''), 3000);
   };
 
   const handleEditEvent = (event) => {
-    setEditEvent(event); // Set the event to be edited
+    setEditEvent({ ...event }); // Make sure to copy the event before editing
   };
 
-  const handleUpdateEvent = () => {
-    const updatedEvents = events.map(event =>
-      event.id === editEvent.id ? editEvent : event
-    );
-    setEvents(updatedEvents);
-    setEditEvent(null); // Clear the edit form
-    setMessage('Event has been successfully updated.');
-    setTimeout(() => setMessage(''), 3000);
+  const handleUpdateEvent = async () => {
+    if (editEvent) {
+        try {
+            const response = await fetch(`http://localhost:8081/api/events/${editEvent.name}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(editEvent),
+            });
+
+            if (response.ok) {
+                const updatedEvents = events.map(event =>
+                    event.name === editEvent.name ? editEvent : event
+                );
+                setEvents(updatedEvents);
+                setEditEvent(null);
+                setMessage('Event has been successfully updated.');
+            } else {
+                const errorData = await response.json();
+                setMessage(`Failed to update event: ${errorData.message || 'Unknown error'}`);
+            }
+        } catch (error) {
+            setMessage('Error updating event');
+        }
+        setTimeout(() => setMessage(''), 3000);
+      }
   };
+
 
   return (
     <div style={styles.container}>
       <h2 style={styles.heading}>Manage Events</h2>
       {message && <p style={{ color: 'red' }}>{message}</p>}
 
-      <h3 style={styles.subHeading}>Upcoming Events</h3>
       <ul style={styles.eventList}>
-        {events.filter(event => event.status === 'upcoming').map(event => (
-          <li key={event.id} style={styles.eventItem}>
+        {events.map(event => (
+          <li key={event.name} style={styles.eventItem}>
             <span>
-              <strong>{event.name}</strong> - {event.date} at {event.time}
+              <strong>{event.name}</strong><br/>
+              Date : {event.date}<br/>
+              Time : {event.time}<br/>
+              Venue : {event.venue || 'N/A'}
             </span>
             <div>
-              <button 
-                style={styles.cancelButton} 
-                onClick={() => handleCancelEvent(event.id)}
+              <button
+                style={styles.cancelButton}
+                onClick={() => handleCancelEvent(event.name)}
               >
                 Cancel
               </button>
-              <button 
-                style={styles.updateButton} 
+              <button
+                style={styles.updateButton}
                 onClick={() => handleEditEvent(event)}
               >
                 Update
               </button>
             </div>
-          </li>
-        ))}
-      </ul>
-
-      <h3 style={styles.subHeading}>Past Events</h3>
-      <ul style={styles.eventList}>
-        {events.filter(event => event.status === 'past').map(event => (
-          <li key={event.id} style={styles.eventItem}>
-            <span>
-              <strong>{event.name}</strong> - {event.date} at {event.time}
-            </span>
           </li>
         ))}
       </ul>
@@ -99,6 +138,14 @@ const ManageEvents = () => {
               type="time"
               value={editEvent.time}
               onChange={(e) => setEditEvent({ ...editEvent, time: e.target.value })}
+            />
+          </label>
+          <label>
+            Venue:
+            <input
+              type="text"
+              value={editEvent.venue}
+              onChange={(e) => setEditEvent({ ...editEvent, venue: e.target.value })}
             />
           </label>
           <button style={styles.saveButton} onClick={handleUpdateEvent}>Save</button>
@@ -134,6 +181,9 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  eventDetails: {
+    flex: 1,
+  },
   cancelButton: {
     backgroundColor: '#FF4136',
     color: '#fff',
@@ -157,7 +207,6 @@ const styles = {
     padding: '15px',
     border: '1px solid #ccc',
     borderRadius: '5px',
-    backgroundColor: '#f9f9f9',
   },
   saveButton: {
     backgroundColor: '#2ECC40',

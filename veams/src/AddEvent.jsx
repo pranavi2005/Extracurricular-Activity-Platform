@@ -1,21 +1,33 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const AddEvent = () => {
   const [eventName, setEventName] = useState('');
   const [eventDate, setEventDate] = useState('');
   const [eventTime, setEventTime] = useState('');
+  const [eventVenue, setEventVenue] = useState(''); // Added venue state
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you can add the logic to save the event to your database
 
-    // Simulating successful event addition
-    alert('Event successfully added!');
-    
-    // Redirecting back to the admin dashboard
-    navigate('/admin-dashboard'); // Adjust the route if necessary
+    // Create the event object
+    const newEvent = {
+      name: eventName,
+      date: eventDate,
+      time: eventTime,
+      venue: eventVenue, // Added venue to event object
+    };
+
+    try {
+      await axios.post('http://localhost:8081/api/events', newEvent);
+      alert('Event successfully added!');
+      navigate('/admin-dashboard');
+    } catch (err) {
+      console.error('Error adding event:', err.message);
+      alert('Error adding event. Please try again.');
+    }
   };
 
   const handleCancel = () => {
@@ -52,6 +64,16 @@ const AddEvent = () => {
             type="time"
             value={eventTime}
             onChange={(e) => setEventTime(e.target.value)}
+            required
+            style={styles.input}
+          />
+        </div>
+        <div style={styles.formGroup}>
+          <label>Venue:</label>
+          <input
+            type="text"
+            value={eventVenue}
+            onChange={(e) => setEventVenue(e.target.value)}
             required
             style={styles.input}
           />
